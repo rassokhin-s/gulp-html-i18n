@@ -196,8 +196,9 @@ module.exports = (opt = {}) ->
             # If the option `createLangDirs` is set, save path/foo.html
             # to path/lang/foo.html. Otherwise, save to path/foo-lang.html
             #
-            if opt.defaultLang isnt lang
-              newFilePath = file.base + lang + '/' + newFilePath.slice(file.base.length)
+            if opt.createLangDirs
+              if opt.defaultLang isnt lang
+                newFilePath = file.base + lang + '/' + newFilePath.slice(file.base.length)
 
             #
             # If the option `inline` is set, replace the tags in the same source file,
@@ -206,10 +207,13 @@ module.exports = (opt = {}) ->
             else if opt.inline
               newFilePath = originPath
             else
-              newFilePath = gutil.replaceExtension(
-                newFilePath,
-                seperator + lang + '.html'
-              )
+              if opt.defaultLang is lang
+                newFilePath = originPath
+              else
+                newFilePath = gutil.replaceExtension(
+                  newFilePath,
+                  seperator + lang + '.html'
+                )
 
             content = replaceProperties file.contents.toString(),
               extend({}, langResource[lang], {_lang_: lang, _default_lang_: opt.defaultLang || ''})
