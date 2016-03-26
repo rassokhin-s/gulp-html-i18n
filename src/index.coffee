@@ -196,9 +196,8 @@ module.exports = (opt = {}) ->
             # If the option `createLangDirs` is set, save path/foo.html
             # to path/lang/foo.html. Otherwise, save to path/foo-lang.html
             #
-            if opt.createLangDirs
-              if opt.defaultLang isnt lang
-                newFilePath = file.base + lang + '/' + newFilePath.slice(file.base.length)
+            if opt.defaultLang isnt lang
+              newFilePath = file.base + lang + '/' + newFilePath.slice(file.base.length)
 
             #
             # If the option `inline` is set, replace the tags in the same source file,
